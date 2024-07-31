@@ -1,0 +1,85 @@
+package Task_2;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentGradeTracker {
+
+    static class Student {
+        String name;
+        ArrayList<Double> grades = new ArrayList<>();
+        
+        public Student(String name) {
+            this.name = name;
+        }
+        
+        public void addGrade(double grade) {
+            grades.add(grade);
+        }
+        
+        public double calculateAverage() {
+            double sum = 0;
+            for (double grade : grades) {
+                sum += grade;
+            }
+            return sum / grades.size();
+        }
+        
+        public char getLetterGrade() {
+            double average = calculateAverage();
+            if (average >= 90) return 'A';
+            else if (average >= 80) return 'B';
+            else if (average >= 70) return 'C';
+            else if (average >= 60) return 'D';
+            else return 'F';
+        }
+
+        public double getGPA() {
+            double average = calculateAverage();
+            if (average >= 90) return 4.0;
+            else if (average >= 80) return 3.0;
+            else if (average >= 70) return 2.0;
+            else if (average >= 60) return 1.0;
+            else return 0.0;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter student's name: ");
+        String name = scanner.nextLine();
+        Student student = new Student(name);
+        
+        System.out.println("Enter grades for the student. Type 'done' to finish:");
+
+        while (true) {
+            System.out.print("Enter grade (0-100): ");
+            String input = scanner.nextLine();
+            
+            if (input.equalsIgnoreCase("done")) {
+                break;
+            }
+            
+            try {
+                double grade = Double.parseDouble(input);
+                if (grade >= 0 && grade <= 100) {
+                    student.addGrade(grade);
+                } else {
+                    System.out.println("Please enter a valid grade between 0 and 100.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+            }
+        }
+
+        double average = student.calculateAverage();
+        char letterGrade = student.getLetterGrade();
+        double gpa = student.getGPA();
+        
+        System.out.printf("\nStudent: %s\n", student.name);
+        System.out.printf("Average Grade: %.2f\n", average);
+        System.out.printf("Letter Grade: %c\n", letterGrade);
+        System.out.printf("GPA: %.1f\n", gpa);
+    }
+}
